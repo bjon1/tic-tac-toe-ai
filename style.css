@@ -25,6 +25,11 @@
     margin: 0px;
 }
 
+.player-style{
+    display: inline-block;
+    font-size: 45px;
+}
+
 .container{
     margin: 6em auto 75px; 
     transform: scale(1.5);
