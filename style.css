@@ -14,7 +14,6 @@
     min-width: 100%;
     /* Set up positioning */
     position: fixed;
-    
 }
 
 .display-title{
@@ -27,7 +26,8 @@
 
 .player-style{
     display: inline-block;
-    font-size: 45px;
+    font-weight: bold;
+    font-size: 65px;
 }
 
 .container{
@@ -37,6 +37,13 @@
     grid-template-columns: 33% 33% 33%;
     grid-template-rows: 33% 33% 33%;
     max-width: 300px;
+    padding: 0;
+}
+
+.display-announce {
+    position: relative;
+    
+    
 }
 
 .tile{
@@ -46,6 +53,7 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    padding: 0;
 }
 
 .top-left, .top-middle, .top-right, .middle-left, .middle-middle, .middle-right{

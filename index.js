@@ -15,7 +15,8 @@ window.addEventListener('DOMContentLoaded', () => {
         [2, 4, 6]
     ];
 
-    let board = ['','','','','','','','','',''];
+    let board = ['','','','','','','','',''];
+    let gameWon = false;
 
     tiles.forEach((tile, index) => {
         tile.addEventListener('click', () => takeAction(tile, index));
@@ -24,12 +25,12 @@ window.addEventListener('DOMContentLoaded', () => {
     resetButton.addEventListener('click', () => resetBoard());
 
     function takeAction(tile, index) {
-        if(isValidMove(tile)){
+        if(isValidMove(tile) && gameWon == false){
             updateBoard(tile, index);
             changePlayer();
         }
     }
-    
+
     function isValidMove(tile) {
         if(tile.innerHTML == 'X' || tile.innerHTML == 'O'){
             return false;
@@ -52,25 +53,61 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    /*
+    const winningConditions = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+    ];
+    */
+
     function checkWin() {
-        /*
-            use winningConditions to check the win
-        */
+        for (let i = 0; i <= 7; i++) {
+            const winCondition = winningConditions[i];
+            const a = board[winCondition[0]];
+            const b = board[winCondition[1]];
+            const c = board[winCondition[2]];
+            if (a === '' || b === '' || c === '') {
+                continue;
+            }
+            if (a === b && b === c) {
+                gameWon = true;
+                announceWin();
+                break;
+            }
+        }
+
+        checkTie();
+    }
+
+    function checkTie(){
+        if(!board.includes('')){
+            announceWin();
+        }
     }
 
     function announceWin() {
-        /* Implement announcerWin by displaying who has won and graying out the game */
+        console.log(gameWon);
+        if(gameWon == true){
+            announcer.innerHTML = turn.innerHTML + " Won!";
+        } else {
+            announcer.innerHTML = "Tie!";
+        }
     }
 
     function resetBoard() {
-        console.log("reset");
-        board = ['','','','','','','','','',''];
+        board = ['','','','','','','','',''];
         turn.innerHTML = 'X';
-        /* must reset ANNOUNCER */
+        announcer.innerHTML = '';
         tiles.forEach(tile => {
             tile.innerHTML = '';            
         });
-        
+        gameWon = false;
     }
 
 });
