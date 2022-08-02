@@ -22,7 +22,6 @@
 }
 
 .display-turn{
-    margin: 0px; 
     margin: 50px;
     font-size: 2em;
 }
@@ -43,13 +42,16 @@
     padding: 0;
 }
 
-@media(max-width: 500px){
+@media(max-width: 400px){
     
     .container{
-        transform: scale(0.9);
+        transform: scale(1.0);
         margin: 1em auto 75px; 
     }
 
+    .display-turn{
+        font-size: 1em;
+    }
 }
 
 .display-announce {
