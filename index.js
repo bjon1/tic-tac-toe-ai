@@ -3,6 +3,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const tiles = Array.from(document.querySelectorAll('.tile')); //Array
     const turn = document.querySelector('.player-turn');
     const resetButton = document.querySelector('#reset');
+    const subHeader = document.querySelector('.display-turn');
     const announcer = document.querySelector('.display-announce'); //will be updated when winner is declared
     const winningConditions = [
         [0, 1, 2],
@@ -94,16 +95,20 @@ window.addEventListener('DOMContentLoaded', () => {
     function announceWin() {
         console.log(gameWon);
         if(gameWon == true){
-            announcer.innerHTML = turn.innerHTML + " Won!";
+            if(turn.innerHTML == 'X'){
+                subHeader.innerHTML = "<h1>Player X Won</h1>";
+            } else {
+                subHeader.innerHTML = "<h1>Player O Won</h1>";
+            }
         } else {
-            announcer.innerHTML = "Tie!";
+            subHeader.innerHTML = "<h1>Tie</h1>";
         }
     }
 
     function resetBoard() {
         board = ['','','','','','','','',''];
         turn.innerHTML = 'X';
-        announcer.innerHTML = '';
+        subHeader.innerHTML = "<h1>Player X's turn</h1>";
         tiles.forEach(tile => {
             tile.innerHTML = '';            
         });
