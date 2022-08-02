@@ -43,6 +43,15 @@
     padding: 0;
 }
 
+@media(max-width: 500px){
+    
+    .container{
+        transform: scale(0.9);
+        margin: 1em auto 75px; 
+    }
+
+}
+
 .display-announce {
     position: relative;    
 }
@@ -69,7 +78,7 @@
     margin: 0px;
 }
 
-#reset{
+.reset{
     padding: 8px;
     margin: 12px;
     background-color: rgb(54, 15, 184);
@@ -81,7 +90,7 @@
     transform: scale(2.0);
 }
 
-#reset:hover{
+.reset:hover{
     transform: scale(2.1);
     background-color: #880ED4;
 }

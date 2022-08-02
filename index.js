@@ -2,7 +2,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const tiles = Array.from(document.querySelectorAll('.tile')); //Array
     const turn = document.querySelector('.player-turn');
-    const resetButton = document.querySelector('#reset');
+    const resetButton = document.querySelector('.reset');
     const subHeader = document.querySelector('.display-turn');
     const announcer = document.querySelector('.display-announce'); //will be updated when winner is declared
     const winningConditions = [
