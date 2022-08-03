@@ -5,6 +5,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const resetButton = document.querySelector('.reset');
     const subHeader = document.querySelector('.display-turn');
     const announcer = document.querySelector('.display-announce'); //will be updated when winner is declared
+    const crosses = Array.from(document.querySelectorAll('.cross'));
     const winningConditions = [
         [0, 1, 2],
         [3, 4, 5],
@@ -54,19 +55,6 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /*
-    const winningConditions = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        [0, 4, 8],
-        [2, 4, 6]
-    ];
-    */
-
     function checkWin() {
         for (let i = 0; i <= 7; i++) {
             const winCondition = winningConditions[i];
@@ -78,30 +66,76 @@ window.addEventListener('DOMContentLoaded', () => {
             }
             if (a === b && b === c) {
                 gameWon = true;
-                announceWin();
+                announceWin(i);
                 break;
             }
         }
-
         checkTie();
     }
 
     function checkTie(){
-        if(!board.includes('')){
-            announceWin();
+        if(!board.includes('') && gameWon == false){
+            announceWin(-1);
         }
     }
 
-    function announceWin() {
-        console.log(gameWon);
+    /*
+    announceWin() takes in a parameter from 0-7
+    The value of this parameter will determine which winning condition has been validated
+    which will determine which cross should be displayed.
+    If code == -1, then that means there is a tie
+    */
+    function announceWin(code) {
         if(gameWon == true){
+            document.querySelector('.container').style.color = "gray";
             if(turn.innerHTML == 'X'){
                 subHeader.innerHTML = "<h1>Player X Won</h1>";
             } else {
                 subHeader.innerHTML = "<h1>Player O Won</h1>";
             }
-        } else {
-            subHeader.innerHTML = "<h1>Tie</h1>";
+        }
+
+    /*
+        const winningConditions = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+    */
+        switch(code){
+            case 0:
+                document.querySelector('.cross-row1').style.visibility = "visible";
+                break;
+            case 1:
+                document.querySelector('.cross-row2').style.visibility = "visible";
+                break;
+            case 2:
+                document.querySelector('.cross-row3').style.visibility = "visible";
+                break;
+            case 3:
+                document.querySelector('.cross-col1').style.visibility = "visible";
+                break;
+            case 4:
+                document.querySelector('.cross-col2').style.visibility = "visible";
+                break;
+            case 5:
+                document.querySelector('.cross-col3').style.visibility = "visible";
+                break;
+            case 6:
+                document.querySelector('.cross-diag1').style.visibility = "visible";
+                break;
+            case 7:    
+                document.querySelector('.cross-diag2').style.visibility = "visible";
+                break;
+            default:
+                subHeader.innerHTML = "<h1>Tie</h1>";
+                document.querySelector('.container').style.color = "gray";
+                break;
         }
     }
 
@@ -113,6 +147,10 @@ window.addEventListener('DOMContentLoaded', () => {
             tile.innerHTML = '';            
         });
         gameWon = false;
+        document.querySelector('.container').style.color = "white";
+        crosses.forEach((cross) => {
+            cross.style.visibility = "hidden";
+        });
     }
 
 });
