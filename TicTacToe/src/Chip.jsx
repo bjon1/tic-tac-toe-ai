@@ -1,8 +1,10 @@
 
-const Chip = ({ rowIndex, cellIndex }) => {
+const Chip = ({ rowIndex, cellIndex, symbol, placeMove }) => {
 
     const handleClick = () => {
-        console.log("clicked"); //call to place move
+        console.log("Row: " + rowIndex + " Cell: " + cellIndex);
+
+        placeMove(rowIndex, cellIndex);
     }
   
     return (
@@ -10,9 +12,9 @@ const Chip = ({ rowIndex, cellIndex }) => {
             className="cell"
             onClick={handleClick}
         >
-
-            
-
+            <div className={`symbol ${symbol ? 'taken' : ''}`}>
+                {symbol}
+            </div>
         </div>
     )
   

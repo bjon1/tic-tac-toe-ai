@@ -12,6 +12,8 @@ const Board = () => {
     return boardArr;
   });
 
+  const [turns, setTurns] = useState(0);
+
   /*
     Function checks to see if the current player wins. If a player did not win (Tie or undecided), return false
   */
@@ -41,6 +43,16 @@ const Board = () => {
       return true;
   }
 
+  const placeMove = (rowIndex, cellIndex) => {
+    console.log(board);
+    if(board[rowIndex][cellIndex] === null) {
+      let newBoard = [...board];
+      newBoard[rowIndex][cellIndex] = (turns % 2 == 0 ? 'X' : 'O');
+      setBoard(newBoard);
+      setTurns(turns + 1);
+    }
+  }
+
 
 
   return (
@@ -48,8 +60,8 @@ const Board = () => {
       <div className="board">
         {board && board.map((row, rowIndex) => 
           <div className="row">
-            {row.map((cell, cellIndex) => 
-              <Chip row={rowIndex} cellIndex={cellIndex} />
+            {row.map((cellContents, cellIndex) => 
+              <Chip rowIndex={rowIndex} cellIndex={cellIndex} symbol={cellContents} placeMove={placeMove} />
             )}
           </div>
         )}
