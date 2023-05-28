@@ -15,6 +15,10 @@ const Board = () => {
   }
   const [board, setBoard] = useState(() => resetBoard());
 
+  useEffect(() => {
+    console.log(board);
+  }, [board])
+
 
   /*
     Function checks to see if the current player wins. If a player did not win (Tie or undecided), return false
@@ -61,7 +65,7 @@ const Board = () => {
         if(board[i][j] === null) {
           let newBoard = [...board];
           newBoard[i][j] = 'O'; //newBoard will be our "simulated" board
-          let score = minimax(newBoard, false); 
+          let score = minimax(newBoard, true); 
           newBoard[i][j] = null;
           if(score < bestScore) {
             bestScore = score;
@@ -86,7 +90,7 @@ const Board = () => {
     let bestScore = isMax ? -1000 : 1000;
     for(let i = 0; i < 3; i++){
       for(let j = 0; j < 3; j++) {
-        if(newBoard[i][j] == null) {
+        if(newBoard[i][j] === null) {
           newBoard[i][j] = symbol;
           let score = minimax(newBoard, !isMax);
           newBoard[i][j] = null;
