@@ -3,15 +3,15 @@ import Chip from './Chip';
 
 const Board = () => {
 
-  const [board, setBoard] = useState(() => 
-  {
+  const resetBoard = () => {
     let boardArr = new Array(3);
     for (let i = 0; i < boardArr.length; i++) {
       boardArr[i] = new Array(3).fill(null);
     }
     return boardArr;
-  });
+  }
 
+  const [board, setBoard] = useState(() => resetBoard());
   const [turns, setTurns] = useState(0);
 
   /*
@@ -53,8 +53,6 @@ const Board = () => {
     }
   }
 
-
-
   return (
     <>
       <div className="board">
@@ -65,7 +63,13 @@ const Board = () => {
             )}
           </div>
         )}
+
+      <div className="button" onClick={()=> setBoard(resetBoard)}>
+        Reset
       </div>
+
+      </div>
+
     </>
   )
 
