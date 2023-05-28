@@ -1,9 +1,9 @@
 
-const Chip = ({ rowIndex, cellIndex, symbol, placeMove }) => {
+const Chip = ({ rowIndex, cellIndex, symbol, makeMove }) => {
 
     const handleClick = () => {
         console.log("Row: " + rowIndex + " Cell: " + cellIndex);
-        placeMove(rowIndex, cellIndex);
+        makeMove(rowIndex, cellIndex);
     }
   
     return (
