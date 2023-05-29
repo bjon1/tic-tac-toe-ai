@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Chip from './Chip';
 import WinMessage from './components/WinMessage';
+import ScoreBoard from './components/ScoreBoard';
 
 let turn = 0;
 
@@ -13,8 +14,8 @@ const Board = () => {
     for (let i = 0; i < boardArr.length; i++) {
       boardArr[i] = new Array(3).fill(null);
     }
-    turn = 0;
     setGameResult(null);
+    turn = 0;
     return boardArr;
   }
 
@@ -147,7 +148,7 @@ const Board = () => {
   }
 
   return (
-    <>
+    <div className="tictactoe">
 
       <WinMessage gameResult={gameResult}/>
 
@@ -159,13 +160,15 @@ const Board = () => {
             )}
           </div>
         )}
-
-      </div>
-      <div className="button" onClick={()=> setBoard(resetBoard)}>
-        Reset
       </div>
 
-    </>
+      <ScoreBoard gameResult={gameResult}/>
+
+      <div className="reset-btn" onClick={()=> setBoard(resetBoard)}>
+      <i class="fa-solid fa-rotate-left fa-xl"></i>
+      </div>
+
+    </div>
   )
 
 }

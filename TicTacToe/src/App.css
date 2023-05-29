@@ -1,8 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
 
 :root {
     --background-color: #210124;
-    --color1: #FF7F11;
+    --color1: orange;
     --color2: #92140C;
     --color3: #00eaff;
     --borderColor: #490c2f;
@@ -15,18 +16,22 @@ body {
     background-color: var(--background-color);
 }
 
+.tictactoe {
+    margin: 5em;
+}
+
 .board {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    margin-bottom: 2em;
 }
 
 .gray { /*when a game state has been decided, gray will be applied to board*/
     pointer-events: none;
     opacity: 0.1;
-    text-shadow:#210124;
+    text-shadow: #210124;
 }
 
 .row {
@@ -36,8 +41,8 @@ body {
 .cell {
     cursor: pointer;
     border: 5px solid var(--borderColor);
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -48,7 +53,7 @@ body {
 .symbol {
     justify-content: center;
     align-items: center;
-    font-size: 5.5em;
+    font-size: 6em;
 }
 
 .X {
@@ -63,10 +68,30 @@ body {
     animation: pop 0.3s;
 }
 
-.button {
+.scoreboard {
+    display: flex;
+    color: var(--color1);
+    justify-content: center;
+    align-items: center;
+    width: 25%;
+    margin: 0 auto;
+}
+
+.score-item {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin: auto;
+}
+
+.reset-btn {
+    position: absolute;
+    right: 32em;
+    top: 31em;
     padding: 8px 16px;
-    background-color: var(--buttonColor);
+    display: inline-block;
     color: #333;
+    border-radius: 20px;
     border: none;
     cursor: pointer;
     font-size: 14px;
@@ -75,8 +100,8 @@ body {
     transition: background-color 0.3s ease;
   }
 
-.button:hover {
-    background-color: var(--color3);
+.reset-btn:hover {
+    background-color: #340238;
 }
 
 .WinMessage {
