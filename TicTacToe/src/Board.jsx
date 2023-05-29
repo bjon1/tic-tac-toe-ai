@@ -5,71 +5,88 @@ let turn = 0;
 
 const Board = () => {
 
+  const [gameResult, setGameResult] = useState(null); //0 for tie, 1 for win
+
   const resetBoard = () => {
     let boardArr = new Array(3);
     for (let i = 0; i < boardArr.length; i++) {
       boardArr[i] = new Array(3).fill(null);
     }
     turn = 0;
+    setGameResult(null);
     return boardArr;
   }
+
   const [board, setBoard] = useState(() => resetBoard());
 
-  useEffect(() => {
-    console.log(board);
-  }, [board])
 
 
   /*
     Function checks to see if the current player wins. If a player did not win (Tie or undecided), return false
   */
-  const isWin = (newBoard, symbol) => {
-    for(let i = 0; i < newBoard.length; i++) { //this i is navigating through the y axis (must keep it in the vertical bounderies)
+  const isWin = (simBoard, symbol) => {
+    for(let i = 0; i < simBoard.length; i++) { //this i is navigating through the y axis (must keep it in the vertical bounderies)
         let row = 0, col = 0;
-        for(let j = 0; j < newBoard[0].length; j++){ //this j is navigating the x axis of the board
-            if(newBoard[i][j] == symbol){row++;} 
-            if(newBoard[j][i] == symbol){col++;}
+        for(let j = 0; j < simBoard[0].length; j++){ //this j is navigating the x axis of the board
+            if(simBoard[i][j] == symbol){row++;} 
+            if(simBoard[j][i] == symbol){col++;}
         }
         if(row == 3 || col == 3){return true;}
     }
     //hardcoded diagonal checks
-    return (newBoard[0][0] === symbol && newBoard[1][1] === symbol && newBoard[2][2] === symbol)
-    || (newBoard[0][2] === symbol && newBoard[1][1] === symbol && newBoard[2][0] === symbol);
+    return (simBoard[0][0] === symbol && simBoard[1][1] === symbol && simBoard[2][2] === symbol)
+    || (simBoard[0][2] === symbol && simBoard[1][1] === symbol && simBoard[2][0] === symbol);
   }
 
   /*
     This function will check to see if the board state contains a tie
   */
-  const isTie = (newBoard) => { //determines if there is a tie
-      for(let i = 0; i < newBoard.length; i++) {
-          for(let j = 0; j < newBoard[0].length; j++){
-              if(newBoard[i][j] === null) return false;
+  const isTie = (simBoard) => { //determines if there is a tie
+      for(let i = 0; i < simBoard.length; i++) {
+          for(let j = 0; j < simBoard[0].length; j++){
+              if(simBoard[i][j] === null) return false;
           }
       }
       return true;
   }
 
   const makeMove = (rowIndex, cellIndex) => {
-    placeMove(rowIndex, cellIndex);
-    setTimeout(function() {
-      let nextBestMove = findBestMove(); //AI's move
-      placeMove(nextBestMove[0], nextBestMove[1]);
-    }, 500);
+    if(turn % 2 === 0 && gameResult === null){
+      placeMove(rowIndex, cellIndex); //your move
+      setTimeout(function() {
+        let nextBestMove = findBestMove(); //AI's move
+        placeMove(nextBestMove[0], nextBestMove[1]);
+      }, 500);
+    }
   }
 
   const findBestMove = () => {
-    let bestScore = 1000;
+    let simBoard = [...board];
+    let isMax = turn % 2 === 0 ? true : false;
+    let bestScore;
+    let symbol;
+
+    if(isMax) {
+      bestScore = -1000;
+      symbol = 'X';
+    } else {
+      bestScore = 1000;
+      symbol = 'O';
+    }
+
     let move;
     for(let i = 0; i < 3; i++){
       for(let j = 0; j < 3; j++){
-        if(board[i][j] === null) {
-          let newBoard = [...board];
-          newBoard[i][j] = 'O'; //newBoard will be our "simulated" board
-          let score = minimax(newBoard, true); 
-          newBoard[i][j] = null;
-          if(score < bestScore) {
+        if(simBoard[i][j] === null) {
+          simBoard[i][j] = symbol; //simBoard will be our "simulated" board
+          let score = minimax(simBoard, !isMax); 
+          simBoard[i][j] = null;
+          if(!isMax && score < bestScore) {
             bestScore = score;
-            move = [ i, j ];
+            move = [i, j];
+          } else if(isMax && score > bestScore) {
+            bestScore = score;
+            move = [i, j];
           }
         }
       }
@@ -77,23 +94,24 @@ const Board = () => {
     return move;
   }
 
-  const minimax = (newBoard, isMax) => {
+  const minimax = (simBoard, isMax) => {
     let symbol = isMax ? 'X' : 'O';
-    if(isWin(newBoard, symbol)) {
+    
+    if(isWin(simBoard, symbol)) {
       return isMax ? 1 : -1;
     }
 
-    if(isTie(newBoard)) {
+    if(isTie(simBoard)) {
       return 0;
     }
 
     let bestScore = isMax ? -1000 : 1000;
     for(let i = 0; i < 3; i++){
       for(let j = 0; j < 3; j++) {
-        if(newBoard[i][j] === null) {
-          newBoard[i][j] = symbol;
-          let score = minimax(newBoard, !isMax);
-          newBoard[i][j] = null;
+        if(simBoard[i][j] === null) {
+          simBoard[i][j] = symbol;
+          let score = minimax(simBoard, !isMax);
+          simBoard[i][j] = null;
           if(!isMax && score < bestScore) {
             bestScore = score;
           } else if(isMax && score > bestScore) {
@@ -106,19 +124,37 @@ const Board = () => {
   }
 
   const placeMove = (rowIndex, cellIndex) => {
-    console.log(board);
     if(board[rowIndex][cellIndex] === null) {
-
       let symbol = turn % 2 == 0 ? 'X' : 'O';
-      let newBoard = [...board];
-      newBoard[rowIndex][cellIndex] = symbol;
-      turn++;
-      setBoard(newBoard);
+      let simBoard = [...board];
+      simBoard[rowIndex][cellIndex] = symbol;
+      setBoard(simBoard);
+      console.log("Turn:", turn);
+      checkWin();
+    }
+  }
+  
+  const checkWin = () => {
+    if(isWin(board, turn % 2 === 0 ? 'X' : 'O')) {
+      setGameResult(1);
+    } else if(isTie(board)) {
+      setGameResult(0);
+    } else {
+      ++turn;
     }
   }
 
   return (
     <>
+
+      {
+        gameResult === 1
+          ? <div>{ turn % 2 == 0 ? 'X' : 'O'} Won!</div>
+          : gameResult === 0
+            ? <div>Tie</div>
+            : null
+      }
+
       <div className="board">
         {board && board.map((row, rowIndex) => 
           <div className="row">
@@ -128,10 +164,9 @@ const Board = () => {
           </div>
         )}
 
+      </div>
       <div className="button" onClick={()=> setBoard(resetBoard)}>
         Reset
-      </div>
-
       </div>
 
     </>
