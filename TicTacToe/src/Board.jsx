@@ -7,7 +7,6 @@ let turn = 0;
 const Board = () => {
 
   const [gameResult, setGameResult] = useState(null); //T for tie
-  const [winner, setWinner] = useState(null);
 
   const resetBoard = () => {
     let boardArr = new Array(3);
