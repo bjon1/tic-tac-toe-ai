@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import Chip from './Chip';
+import WinMessage from './components/WinMessage';
 
 let turn = 0;
 
 const Board = () => {
 
-  const [gameResult, setGameResult] = useState(null); //0 for tie, 1 for win
+  const [gameResult, setGameResult] = useState(null); //T for tie
+  const [winner, setWinner] = useState(null);
 
   const resetBoard = () => {
     let boardArr = new Array(3);
@@ -135,10 +137,11 @@ const Board = () => {
   }
   
   const checkWin = () => {
-    if(isWin(board, turn % 2 === 0 ? 'X' : 'O')) {
-      setGameResult(1);
+    let symbol = turn % 2 === 0 ? 'X' : 'O'
+    if(isWin(board, symbol)) {
+      setGameResult(symbol);
     } else if(isTie(board)) {
-      setGameResult(0);
+      setGameResult('T');
     } else {
       ++turn;
     }
@@ -147,15 +150,9 @@ const Board = () => {
   return (
     <>
 
-      {
-        gameResult === 1
-          ? <div>{ turn % 2 == 0 ? 'X' : 'O'} Won!</div>
-          : gameResult === 0
-            ? <div>Tie</div>
-            : null
-      }
+      <WinMessage gameResult={gameResult}/>
 
-      <div className="board">
+      <div className={`board ${gameResult ? 'gray' : ' '}`}>
         {board && board.map((row, rowIndex) => 
           <div className="row">
             {row.map((cellContents, cellIndex) => 
