@@ -93,30 +93,34 @@ const Board = () => {
         }
       }
     }
+    console.log("Best Score: ", bestScore);
     return move;
   }
 
-  const minimax = (simBoard, isMax) => {
+  function minimax(simBoard, isMax) {
     let symbol = isMax ? 'X' : 'O';
-    
-    if(isWin(simBoard, symbol)) {
-      return isMax ? 1 : -1;
-    }
+
+    if(isWin(simBoard, 'X'))
+      return 1;
+    if(isWin(simBoard,'O'))
+      return -1;
+    if(isTie(simBoard))
+      return 0;
 
     if(isTie(simBoard)) {
       return 0;
     }
 
     let bestScore = isMax ? -1000 : 1000;
-    for(let i = 0; i < 3; i++){
-      for(let j = 0; j < 3; j++) {
+    for(let i = 0; i < board.length; i++){
+      for(let j = 0; j < board[0].length; j++) {
         if(simBoard[i][j] === null) {
           simBoard[i][j] = symbol;
           let score = minimax(simBoard, !isMax);
           simBoard[i][j] = null;
-          if(!isMax && score < bestScore) {
+          if(isMax && score > bestScore) {
             bestScore = score;
-          } else if(isMax && score > bestScore) {
+          } else if(!isMax && score < bestScore) {
             bestScore = score;
           }
         }
@@ -165,7 +169,7 @@ const Board = () => {
       <ScoreBoard gameResult={gameResult}/>
 
       <div className="reset-btn" onClick={()=> setBoard(resetBoard)}>
-      <i class="fa-solid fa-rotate-left fa-xl"></i>
+      <i className="fa-solid fa-rotate-left fa-xl"></i>
       </div>
 
     </div>
