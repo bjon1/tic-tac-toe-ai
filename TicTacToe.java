@@ -1,4 +1,4 @@
-public class TicTacToe { //courtesy to Michael
+public class TicTacToe { //courtesy to MFreit50 for writing this in Java
 
     public static int count = 0;
     public static void main(String[] args) {
